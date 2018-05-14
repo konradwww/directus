@@ -340,9 +340,6 @@ class Bootstrap
 
     private static function zendDbSlave()
     {
-        if (!defined('DB_HOST_SLAVE')) {
-            return self::zenddb();
-        }
         self::requireConstants(['DIRECTUS_ENV', 'DB_HOST_SLAVE', 'DB_NAME', 'DB_USER_SLAVE', 'DB_PASSWORD_SLAVE'], __FUNCTION__);
         $dbConfig = [
             'driver' => 'Pdo_Mysql',
@@ -406,8 +403,12 @@ class Bootstrap
             $db = new Connection($dbConfig);
             $db->connect();
         } catch (\Exception $e) {
-            echo 'Database connection failed.';
-            exit;
+            try {
+                $db = self::zendDbSlave();
+            } catch (\Exception $a) {
+                echo 'Database connection failed.';
+                exit;
+            }
         }
 
         return $db;
