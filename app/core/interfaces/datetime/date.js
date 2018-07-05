@@ -96,6 +96,9 @@ define([
         value = moment('0000-00-00');
       } else {
         value = moment(value);
+        //convert to local datetime
+        value.utc(value);
+        value.local();
       }
 
       if (settings.get('auto_populate') === true && value.isValid() === false) {
