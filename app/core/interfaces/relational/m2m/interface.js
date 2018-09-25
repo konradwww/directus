@@ -44,6 +44,10 @@ define([
 
         attributes[statusColumnName] = statusValue;
         model.set(attributes);
+
+        if (event.currentTarget.parentNode.parentNode.className !== 'js-row not-published') {
+            this.relatedCollection.length = this.relatedCollection.length - 1;
+        }
       }
     },
 
